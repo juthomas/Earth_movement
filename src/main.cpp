@@ -271,8 +271,8 @@ void loop() {
 			Serial.print("Time="); Serial.println(gpsTime);
 			Serial.print("Time2="); Serial.println(gps.time.value());
 			Serial.print("Acceleration de la terre="); Serial.println(((gps.date.year() - 2021) * 0.0002));
-			Serial.print("VITESSE DE LA TERRE="); Serial.println(2 * PI * cos(radians(latitude)) * (6378 + alt) / 24 + vitesse + ((gps.date.year() - 2021) * 0.0002));
-			mySpeed = 2 * PI * cos(radians(latitude)) * (6378 + alt) / 24 + vitesse + ((gps.date.year() - 2021) * 0.0002);
+			Serial.print("VITESSE DE LA TERRE="); Serial.println(2 * PI * cos(radians(latitude)) * (6378 + alt * 0.001) / 24 + vitesse + ((gps.date.year() - 2021) * 0.0002));
+			mySpeed = 2 * PI * cos(radians(latitude)) * (6378 + alt * 0.001) / 24 + vitesse + ((gps.date.year() - 2021) * 0.0002);
 		}
 	}
 
