@@ -46,6 +46,7 @@ double longitude;
 double alt; //altitude
 double vitesse;
 char gpsTime[100];
+char gpsDate[100];
 unsigned long nbre_sat;
 
 TinyGPSPlus gps;
@@ -190,6 +191,11 @@ void print_activity(int angle, double mySpeed)
 	drawingSprite.printf("Gps Time : ");
 	drawingSprite.setTextColor(TFT_WHITE);
 	drawingSprite.print(gpsTime);
+	drawingSprite.setCursor(0, 45);
+	drawingSprite.setTextColor(TFT_RED);
+	drawingSprite.printf("Gps Date : ");
+	drawingSprite.setTextColor(TFT_WHITE);
+	drawingSprite.print(gpsDate);
 
 	TFT_eSprite direction = TFT_eSprite(&tft);
 	direction.setColorDepth(8);
@@ -206,7 +212,7 @@ void print_activity(int angle, double mySpeed)
 	directionBack.createSprite(100, 100);
 
 	direction.pushRotated(&directionBack, angle+90);
-	directionBack.pushToSprite(&drawingSprite, 15, 50);
+	directionBack.pushToSprite(&drawingSprite, 15, 70);
 
 	drawingSprite.setCursor(0, 185);
 	drawingSprite.setTextSize(1);
@@ -258,9 +264,10 @@ void loop() {
 			alt = gps.altitude.meters();
 			vitesse = gps.speed.kmph();
 			nbre_sat = gps.satellites.value();
+			sprintf(gpsDate, "%02d/%02d/%d", gps.date.day(), gps.date.month(), gps.date.year());
 			// gpsTime = gps.time.value();
 			// gpsTime = (gps.time.hour() + 1 % 24) + ":" + gps.time.minute() + ":" + gps.time.second();
-			sprintf(gpsTime, "%d:%d:%d" , (gps.time.hour() + 1 % 24), gps.time.minute(), gps.time.second());
+			sprintf(gpsTime, "%02d:%02d:%02d" , (gps.time.hour() + 1 % 24), gps.time.minute(), gps.time.second());
 
 			Serial.println("-------- FIX GPS ------------");
 			Serial.print("LATITUDE="); Serial.println(latitude);
