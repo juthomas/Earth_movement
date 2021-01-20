@@ -175,7 +175,7 @@ void print_activity(int angle, double mySpeed)
 		drawingSprite.setTextColor(TFT_GREEN);
 		drawingSprite.setTextDatum(MC_DATUM);
 		drawingSprite.setCursor(0, 100);
-		drawingSprite.printf("Creation\ndu contact\navec les\nIlluminatis");
+		drawingSprite.printf(" Creation\ndu contact\n avec les\nIlluminatis");
 		drawingSprite.setTextColor(TFT_DARKGREY);
 		drawingSprite.setTextSize(1);
 		drawingSprite.setCursor(0, 230);
@@ -207,6 +207,12 @@ void print_activity(int angle, double mySpeed)
 
 	direction.pushRotated(&directionBack, angle+90);
 	directionBack.pushToSprite(&drawingSprite, 15, 50);
+
+	drawingSprite.setCursor(0, 185);
+	drawingSprite.setTextSize(1);
+	drawingSprite.setTextColor(TFT_GREEN);
+	drawingSprite.printf(" Vitesse de rotation :");
+
 
 	drawingSprite.setTextSize(2);
 	drawingSprite.setTextFont(1);
@@ -264,8 +270,9 @@ void loop() {
 			Serial.print("NOMBRE SATELLITES="); Serial.println(nbre_sat);
 			Serial.print("Time="); Serial.println(gpsTime);
 			Serial.print("Time2="); Serial.println(gps.time.value());
-			Serial.print("VITESSE DE LA TERRE="); Serial.println(2 * PI * cos(radians(latitude)) * (6378 + alt) / 24);
-			mySpeed = 2 * PI * cos(radians(latitude)) * 6378 / 24 + vitesse;
+			Serial.print("Acceleration de la terre="); Serial.println(((gps.date.year() - 2021) * 0.0002));
+			Serial.print("VITESSE DE LA TERRE="); Serial.println(2 * PI * cos(radians(latitude)) * (6378 + alt) / 24 + vitesse + ((gps.date.year() - 2021) * 0.0002));
+			mySpeed = 2 * PI * cos(radians(latitude)) * (6378 + alt) / 24 + vitesse + ((gps.date.year() - 2021) * 0.0002);
 		}
 	}
 
