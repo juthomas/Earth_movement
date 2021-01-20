@@ -45,6 +45,7 @@ double latitude;
 double longitude;
 double alt; //altitude
 double vitesse;
+char gpsTime[100];
 unsigned long nbre_sat;
 
 TinyGPSPlus gps;
@@ -156,12 +157,17 @@ void print_activity(int angle, double mySpeed)
 		drawingSprite.setTextColor(TFT_WHITE);
 	drawingSprite.printf("%.2fv\n\n", battery_voltage);
 	drawBatteryLevel(&drawingSprite, 100, 00, battery_voltage);
-	drawingSprite.setCursor(0, 20);
 
+	drawingSprite.setCursor(0, 15);
 	drawingSprite.setTextColor(TFT_RED);
 	drawingSprite.printf("Satellites : ");
 	drawingSprite.setTextColor(TFT_WHITE);
 	drawingSprite.printf("%ld\n\n", nbre_sat);
+
+
+
+
+
 	if (nbre_sat < 3)
 	{
 		drawingSprite.setTextSize(2);
@@ -177,7 +183,13 @@ void print_activity(int angle, double mySpeed)
 
 		drawingSprite.pushSprite(0, 0);
 		drawingSprite.deleteSprite();
+		return;
 	}
+	drawingSprite.setCursor(0, 30);
+	drawingSprite.setTextColor(TFT_RED);
+	drawingSprite.printf("Gps Time : ");
+	drawingSprite.setTextColor(TFT_WHITE);
+	drawingSprite.print(gpsTime);
 
 	TFT_eSprite direction = TFT_eSprite(&tft);
 	direction.setColorDepth(8);
@@ -240,13 +252,18 @@ void loop() {
 			alt = gps.altitude.meters();
 			vitesse = gps.speed.kmph();
 			nbre_sat = gps.satellites.value();
- 
+			// gpsTime = gps.time.value();
+			// gpsTime = (gps.time.hour() + 1 % 24) + ":" + gps.time.minute() + ":" + gps.time.second();
+			sprintf(gpsTime, "%d:%d:%d" , (gps.time.hour() + 1 % 24), gps.time.minute(), gps.time.second());
+
 			Serial.println("-------- FIX GPS ------------");
 			Serial.print("LATITUDE="); Serial.println(latitude);
 			Serial.print("LONGITUDE="); Serial.println(longitude);
 			Serial.print("ALTITUDE (m) ="); Serial.println(alt);
 			Serial.print("VITESSE (km/h)="); Serial.println(vitesse);
 			Serial.print("NOMBRE SATELLITES="); Serial.println(nbre_sat);
+			Serial.print("Time="); Serial.println(gpsTime);
+			Serial.print("Time2="); Serial.println(gps.time.value());
 			Serial.print("VITESSE DE LA TERRE="); Serial.println(2 * PI * cos(radians(latitude)) * (6378 + alt) / 24);
 			mySpeed = 2 * PI * cos(radians(latitude)) * 6378 / 24 + vitesse;
 		}
